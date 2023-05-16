@@ -1,14 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
-axios.defaults.baseURL = 'https://6460b47ffe8d6fb29e35717a.mockapi.io/';
+import * as mockAPI from 'services/mockAPI';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/contacts');
-      return response.data;
+      const contacts = await mockAPI.fetchContacts();
+      return contacts;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
@@ -19,44 +18,22 @@ export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkAPI) => {
     try {
-      const response = await axios.delete(`/contacts/${contactId}`);
-      return response.data.id;
+      const resultId = await mockAPI.deleteContact(contactId);
+      return resultId;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
 
-export const createContact = createAsyncThunk(
-  'contacts/createContact',
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
   async (contact, thunkAPI) => {
     try {
-      const response = await axios.post(`/contacts/`, contact);
-      return response.data;
+      const result = await mockAPI.addContact(contact);
+      return result;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
-
-// axios.defaults.baseURL = 'https://6460b47ffe8d6fb29e35717a.mockapi.io/';
-
-// export async function fetchContacts() {
-//   const { data } = await axios.get(`/contacts`);
-//   return data;
-// }
-
-// import { createAsyncThunk } from '@reduxjs/toolkit';
-// import * as mockAPI from 'services/mockAPI';
-
-// export const fetchContacts = createAsyncThunk(
-//   'contacts/fetchContacts',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const contacts = await mockAPI.fetchContacts();
-//       return contacts;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );

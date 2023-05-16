@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
 
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import { contactsOperations } from 'redux/contacts';
+import { getContacts, getIsLoading, getError } from 'redux/contactsSlice';
 
 import {
   StyledForm,
@@ -38,7 +39,7 @@ export function ContactForm() {
   const dispatch = useDispatch();
   const id = useId().replace(/:/g, '');
 
-  const contacts = useSelector(contactsSelectors.getContacts);
+  const contacts = useSelector(getContacts);
 
   const onSubmit = ({ name, number }, { resetForm }) => {
     if (
@@ -51,7 +52,7 @@ export function ContactForm() {
     }
 
     dispatch(
-      contactsOperations.createContact({
+      contactsOperations.addContact({
         name,
         phone: number,
       })

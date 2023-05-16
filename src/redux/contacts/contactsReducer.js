@@ -1,13 +1,9 @@
 import { createReducer, combineReducers } from '@reduxjs/toolkit';
-import {
-  fetchContacts,
-  deleteContact,
-  createContact,
-} from './contactsOperations';
+import { fetchContacts, deleteContact, addContact } from './contactsOperations';
 
 const items = createReducer([], {
   [fetchContacts.fulfilled]: (_, action) => action.payload,
-  [createContact.fulfilled]: (state, action) => {
+  [addContact.fulfilled]: (state, action) => {
     const createdContact = action.payload;
     state.push(createdContact);
     return state;
@@ -25,9 +21,9 @@ const isLoading = createReducer(false, {
   [deleteContact.pending]: () => true,
   [deleteContact.fulfilled]: () => false,
   [deleteContact.rejected]: () => false,
-  [createContact.pending]: () => true,
-  [createContact.fulfilled]: () => false,
-  [createContact.rejected]: () => false,
+  [addContact.pending]: () => true,
+  [addContact.fulfilled]: () => false,
+  [addContact.rejected]: () => false,
 });
 
 const error = createReducer(null, {
@@ -35,8 +31,8 @@ const error = createReducer(null, {
   [fetchContacts.pending]: () => null,
   [deleteContact.rejected]: (_, action) => action.payload,
   [deleteContact.pending]: () => null,
-  [createContact.rejected]: (_, action) => action.payload,
-  [createContact.pending]: () => null,
+  [addContact.rejected]: (_, action) => action.payload,
+  [addContact.pending]: () => null,
 });
 
 export default combineReducers({
