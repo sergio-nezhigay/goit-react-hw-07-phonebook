@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Label } from 'components/ContactForm/ContactForm.styled';
 import { InputShort } from './Filter.styled';
-import { setFilter } from 'redux/filterSlice';
-import { getFilter } from 'redux/selectors';
+import { setFilter } from 'redux/filter/filterActions';
+import { getFilter } from 'redux/filter/filterSelectors';
 
 export function Filter() {
   const filter = useSelector(getFilter);
+
   const filterInputId = nanoid();
   const dispatch = useDispatch();
 

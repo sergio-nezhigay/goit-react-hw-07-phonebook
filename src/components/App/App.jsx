@@ -1,20 +1,29 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { useFavicon, useTitle } from 'react-use';
+import { useDispatch, useSelector } from 'react-redux';
 import addressIcon from '../../assets/images/icons8-address-book-32.png';
-import { getContacts } from 'redux/selectors';
 
-import {
-  Container,
-  Section,
-  ContactForm,
-  ContactList,
-  Filter,
-} from 'components';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
+
+import { ContactList, ContactForm, Section, Filter } from 'components';
+import { Container } from 'components';
 
 export function App() {
+  const dispatch = useDispatch();
   useTitle('Phonebook');
   useFavicon(addressIcon);
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(contactsSelectors.getContacts);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        dispatch(contactsOperations.fetchContacts());
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [dispatch]);
 
   return (
     <Container>
