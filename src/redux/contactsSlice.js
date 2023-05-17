@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { batch } from 'react-redux';
 import {
   fetchContacts,
   deleteContact,
@@ -8,37 +9,67 @@ import {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: { items: [], isLoading: false, error: null },
-  extraReducers: {
-    [fetchContacts.pending](state) {
-      state.isLoading = true;
-    },
-    [fetchContacts.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items = action.payload;
-    },
-    [deleteContact.fulfilled](state, action) {
-      const deletedContactId = action.payload;
-      state.items = state.items.filter(
-        contact => contact.id !== deletedContactId
-      );
-    },
-    [addContact.fulfilled](state, action) {
-      const createdContact = action.payload;
-      state.items.push(createdContact);
-    },
-    [fetchContacts.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [deleteContact.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [addContact.rejected](state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        batch(() => {
+          state.isLoading = false;
+          state.error = null;
+          state.items = action.payload;
+        });
+      })
+      .addCase(fetchContacts.pending, state => {
+        batch(() => {
+          state.isLoading = true;
+          state.error = null;
+        });
+      })
+      .addCase(fetchContacts.rejected, (state, action) => {
+        batch(() => {
+          state.isLoading = false;
+          state.error = action.payload;
+        });
+      })
+      .addCase(addContact.fulfilled, (state, action) => {
+        batch(() => {
+          state.isLoading = false;
+          const createdContact = action.payload;
+          state.items.push(createdContact);
+        });
+      })
+      .addCase(addContact.pending, state => {
+        batch(() => {
+          state.isLoading = true;
+          state.error = null;
+        });
+      })
+      .addCase(addContact.rejected, (state, action) => {
+        batch(() => {
+          state.isLoading = false;
+          state.error = action.payload;
+        });
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        batch(() => {
+          state.isLoading = false;
+          const deletedContactId = action.payload;
+          state.items = state.items.filter(
+            contact => contact.id !== deletedContactId
+          );
+        });
+      })
+      .addCase(deleteContact.pending, state => {
+        batch(() => {
+          state.isLoading = true;
+          state.error = null;
+        });
+      })
+      .addCase(deleteContact.rejected, (state, action) => {
+        batch(() => {
+          state.isLoading = false;
+          state.error = action.payload;
+        });
+      });
   },
 });
 

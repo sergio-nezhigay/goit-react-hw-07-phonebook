@@ -1,4 +1,5 @@
-// change to addCase syntax!!!
+//  and  make sort in slice reduceers /extra reducer!
+// selectors by conspect!!!
 
 import { useEffect } from 'react';
 import { useFavicon, useTitle } from 'react-use';
@@ -16,7 +17,9 @@ export function App() {
   useTitle('Phonebook');
   useFavicon(addressIcon);
   const contacts = useSelector(getContacts);
+  console.log('🚀 ~ file: App.jsx:19 ~ App ~ contacts:', contacts);
   const isLoading = useSelector(getIsLoading);
+  console.log('🚀 ~ file: App.jsx:20 ~ App ~ isLoading:', isLoading);
   const error = useSelector(getError);
 
   useEffect(() => {
