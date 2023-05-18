@@ -7,8 +7,13 @@ export const getError = state => state.contacts.error;
 
 export const filteredContactsSelector = createSelector(
   [getContacts, getFilter],
-  (contacts, filter) =>
-    contacts.filter(contact =>
+  (contacts, filter) => {
+    const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
-    )
+    );
+
+    return filteredContacts.sort((a, b) => {
+      return b.id - a.id;
+    });
+  }
 );
