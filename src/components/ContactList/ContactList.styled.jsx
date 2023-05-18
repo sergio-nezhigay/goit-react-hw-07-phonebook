@@ -10,6 +10,7 @@ export const List = styled.ul`
 export const Li = styled.li`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
 
   position: relative;
@@ -29,10 +30,10 @@ export const Li = styled.li`
 
 export const DeleteButton = styled.button`
   display: inline-block;
-  font-size: 12px;
+  font-size: 16px;
   color: ${props => props.theme.colors.white};
   background: ${props => props.theme.colors.accent};
-  padding: 3px 10px;
+  padding: 6px 20px;
   border-radius: 10px;
   box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
   transition: 0.5s;
@@ -40,6 +41,10 @@ export const DeleteButton = styled.button`
   outline: none;
   &:hover {
     box-shadow: none;
+  }
+  &:disabled {
+    opacity: 0.6; /* Adjust the opacity to your preference */
+    cursor: not-allowed;
   }
 `;
 

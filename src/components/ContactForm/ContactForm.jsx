@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
 
-import { contactsOperations } from 'redux/contacts';
-import { getContacts, getIsLoading, getError } from 'redux/contactsSlice';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 
 import {
   StyledForm,
@@ -38,8 +37,8 @@ let schema = object({
 export function ContactForm() {
   const dispatch = useDispatch();
   const id = useId().replace(/:/g, '');
-
-  const contacts = useSelector(getContacts);
+  const isLoading = useSelector(contactsSelectors.getIsLoading);
+  const contacts = useSelector(contactsSelectors.getContacts);
 
   const onSubmit = ({ name, number }, { resetForm }) => {
     if (
@@ -83,7 +82,9 @@ export function ContactForm() {
           id={'number_' + id}
         />
         <ErrorMessage component={ErrorStyledMessage} name="number" />
-        <Button type="submit">Add Contact</Button>
+        <Button type="submit" disabled={isLoading}>
+          Add Contact
+        </Button>
       </StyledForm>
     </Formik>
   );

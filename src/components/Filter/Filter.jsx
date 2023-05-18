@@ -1,16 +1,14 @@
-import React from 'react';
-import { nanoid } from '@reduxjs/toolkit';
+import React, { useId } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { setFilter } from 'redux/filter/filterSlice';
+import { filterSelectors } from 'redux/filter';
 import { Label } from 'components/ContactForm/ContactForm.styled';
 import { InputShort } from './Filter.styled';
-import { setFilter } from 'redux/filter/filterActions';
-import { getFilter } from 'redux/filter/filterSelectors';
 
 export function Filter() {
-  const filter = useSelector(getFilter);
-
-  const filterInputId = nanoid();
+  const filter = useSelector(filterSelectors.getFilter);
+  const filterInputId = useId().replace(/:/g, '');
   const dispatch = useDispatch();
 
   const onChange = e => {

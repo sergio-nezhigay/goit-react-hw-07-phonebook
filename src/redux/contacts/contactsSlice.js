@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { batch } from 'react-redux';
-import {
-  fetchContacts,
-  deleteContact,
-  addContact,
-} from './contacts/contactsOperations';
+import { fetchContacts, deleteContact, addContact } from './contactsOperations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -74,7 +70,3 @@ const contactsSlice = createSlice({
 });
 
 export const contactsReducer = contactsSlice.reducer;
-
-export const getContacts = state => state.contacts.items;
-export const getIsLoading = state => state.contacts.isLoading;
-export const getError = state => state.contacts.error;

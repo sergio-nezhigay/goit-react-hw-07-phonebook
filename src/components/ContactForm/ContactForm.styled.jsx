@@ -62,4 +62,8 @@ export const Button = styled.button`
   &:hover {
     box-shadow: none;
   }
+  &:disabled {
+    opacity: 0.6; /* Adjust the opacity to your preference */
+    cursor: not-allowed;
+  }
 `;
