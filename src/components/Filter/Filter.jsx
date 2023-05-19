@@ -7,7 +7,7 @@ import { Label } from 'components/ContactForm/ContactForm.styled';
 import { InputShort } from './Filter.styled';
 
 export function Filter() {
-  const filter = useSelector(filterSelectors.getFilter);
+  const filter = useSelector(filterSelectors.selectFilter);
   const filterInputId = useId().replace(/:/g, '');
   const dispatch = useDispatch();
 

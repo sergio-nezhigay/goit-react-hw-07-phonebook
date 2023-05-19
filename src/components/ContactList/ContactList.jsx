@@ -1,23 +1,27 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import {
+  useFetchContactsQuery,
+  useDeleteContactMutation,
+} from 'redux/contacts/contactsAPI';
 
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import { filterSelectors } from 'redux/filter';
 import { List, Li, DeleteButton, Text } from './ContactList.styled';
 
 export function ContactList() {
-  const dispatch = useDispatch();
-
+  const { data: contacts = [] } = useFetchContactsQuery();
+  const [deleteContact] = useDeleteContactMutation();
   const onDelete = id => {
-    dispatch(contactsOperations.deleteContact(id));
+    console.log('🚀 ~ file: ContactList.jsx:17 ~ onDelete ~ id:', id);
+    deleteContact(id);
   };
 
-  const filteredAndMemoedcontacts = useSelector(
-    contactsSelectors.filteredContactsSelector
-  );
+  const filter = useSelector(filterSelectors.selectFilter);
+  const filteredContacts = contacts.filter(({ name }) => name.includes(filter));
 
   return (
     <List>
-      {filteredAndMemoedcontacts.map(({ id, phone, name }) => {
+      {filteredContacts.map(({ id, phone, name }) => {
         return (
           <Li key={id}>
             <Text>

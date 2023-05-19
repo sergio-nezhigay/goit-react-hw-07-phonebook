@@ -1,10 +1,6 @@
-import { useEffect } from 'react';
 import { useFavicon, useTitle } from 'react-use';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
 import { Filler } from './App.styled';
-
 import {
   ContactList,
   ContactForm,
@@ -15,23 +11,12 @@ import {
 } from 'components';
 
 import addressIcon from '../../assets/images/icons8-address-book-32.png';
+import { useFetchContactsQuery } from 'redux/contacts/contactsAPI';
 
 export function App() {
-  const dispatch = useDispatch();
   useTitle('Phonebook');
   useFavicon(addressIcon);
-  const contacts = useSelector(contactsSelectors.getContacts);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        dispatch(contactsOperations.fetchContacts());
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, [dispatch]);
+  const { data: contacts = [] } = useFetchContactsQuery();
 
   return (
     <Container>

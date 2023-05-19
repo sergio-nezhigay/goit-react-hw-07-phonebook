@@ -1,9 +1,12 @@
 import React, { useId } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { Formik, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
 
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import {
+  useFetchContactsQuery,
+  useAddContactMutation,
+} from 'redux/contacts/contactsAPI';
 
 import {
   StyledForm,
@@ -35,11 +38,9 @@ let schema = object({
 });
 
 export function ContactForm() {
-  const dispatch = useDispatch();
   const id = useId().replace(/:/g, '');
-  const isLoading = useSelector(contactsSelectors.getIsLoading);
-  const contacts = useSelector(contactsSelectors.getContacts);
-
+  const { data: contacts = [], isLoading } = useFetchContactsQuery();
+  const [addContact] = useAddContactMutation();
   const onSubmit = ({ name, number }, { resetForm }) => {
     if (
       contacts.some(contact =>
@@ -50,12 +51,10 @@ export function ContactForm() {
       return;
     }
 
-    dispatch(
-      contactsOperations.addContact({
-        name,
-        phone: number,
-      })
-    );
+    addContact({
+      name,
+      phone: number,
+    });
     resetForm();
   };
 
